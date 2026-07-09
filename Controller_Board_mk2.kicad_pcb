@@ -13376,9 +13376,22 @@
 		(uuid "794ad2c8-7729-4e2c-b1bf-e327f713d272")
 	)
 	(gr_text "CHOPSCORP. 2026"
-		(at 56.515 60 0)
+		(at 56.515 59.69 0)
 		(layer "F.Cu")
 		(uuid "1a5a820c-c91c-49dc-9aac-17ede9a434fa")
+		(effects
+			(font
+				(size 1.5 1.5)
+				(thickness 0.3)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "CHOPSCORP. 2026\n"
+		(at 56.515 59.69 0)
+		(layer "F.Mask")
+		(uuid "752ff011-3dbc-45b0-a1c9-bb6bf79294c2")
 		(effects
 			(font
 				(size 1.5 1.5)
