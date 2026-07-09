@@ -613,6 +613,12 @@
           "group_by": false,
           "label": "LCSC",
           "name": "LCSC",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "JLCPCB",
+          "name": "JLCPCB",
           "show": false
         }
       ],

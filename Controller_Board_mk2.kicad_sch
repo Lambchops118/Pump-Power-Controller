@@ -2694,6 +2694,12 @@
 		(uuid "5cd6b59c-625c-42d9-b8d9-37a7d7c4ad40")
 	)
 	(junction
+		(at 162.56 144.78)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "638af2bf-6f3b-40b4-a4b8-0d35bc3dcc93")
+	)
+	(junction
 		(at 148.59 148.59)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2728,12 +2734,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7a205da9-77fd-45ac-a256-992d97177bda")
-	)
-	(junction
-		(at 162.56 144.78)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7aeeaeeb-ac6d-4653-9fd8-c27a90439510")
 	)
 	(junction
 		(at 95.25 154.94)
@@ -2844,12 +2844,6 @@
 		(uuid "d8941b58-7565-4d88-ace8-765ea80479ff")
 	)
 	(junction
-		(at 162.56 148.59)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d95190e5-d2d1-4187-addf-518fbc9e0691")
-	)
-	(junction
 		(at 21.59 90.17)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2866,6 +2860,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e1210bff-a3c1-47b5-a9d9-145b86c5b8af")
+	)
+	(junction
+		(at 162.56 148.59)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e49c41bf-98dc-4a7a-b3f5-72b54db532dc")
 	)
 	(junction
 		(at 162.56 152.4)
@@ -3157,6 +3157,16 @@
 	)
 	(wire
 		(pts
+			(xy 162.56 144.78) (xy 162.56 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "33d0e004-de04-408a-9bd5-e1f6bb35180b")
+	)
+	(wire
+		(pts
 			(xy 139.7 69.85) (xy 158.75 69.85)
 		)
 		(stroke
@@ -3204,16 +3214,6 @@
 			(type default)
 		)
 		(uuid "430d4a93-7509-450b-8c53-ae93eb73584d")
-	)
-	(wire
-		(pts
-			(xy 162.56 148.59) (xy 162.56 152.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "43fead00-d9f8-47cb-aed7-1d4ed6a60c7f")
 	)
 	(wire
 		(pts
@@ -3617,16 +3617,6 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 144.78) (xy 162.56 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "85dbf201-1010-4025-ad94-2cdaa5aeaf5f")
-	)
-	(wire
-		(pts
 			(xy 92.71 99.06) (xy 86.36 99.06)
 		)
 		(stroke
@@ -3954,6 +3944,16 @@
 			(type default)
 		)
 		(uuid "c728ef63-453d-4c81-abc3-02567e78d0a5")
+	)
+	(wire
+		(pts
+			(xy 162.56 148.59) (xy 162.56 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ca71e982-0123-42e6-a345-848f997ab675")
 	)
 	(wire
 		(pts
@@ -4841,6 +4841,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C12559"
+			(at 21.59 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "ed631f1f-d39c-4aef-a5af-79db650e14cf")
 		)
@@ -5259,6 +5268,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C12559"
+			(at 116.84 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "d58895e6-1dcd-4d08-b728-ff39e9dfe858")
 		)
@@ -5495,6 +5513,15 @@
 			)
 		)
 		(property "JLCPCB" "C16490"
+			(at 21.59 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C16490"
 			(at 21.59 38.1 0)
 			(effects
 				(font
@@ -5797,83 +5824,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 158.75 148.59 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "389e81a0-fb71-4fed-9add-d2212625e21a")
-		(property "Reference" "R11"
-			(at 158.75 142.24 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33k"
-			(at 158.75 144.78 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 158.75 150.368 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 158.75 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 158.75 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB" "C4216"
-			(at 158.75 148.59 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "45c9106d-119f-4d08-b4d6-edcd77ad0062")
-		)
-		(pin "2"
-			(uuid "c63ed3da-93cf-411a-984f-4bb5c017dc78")
-		)
-		(instances
-			(project "Controller_Board_mk2"
-				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
-					(reference "R11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 132.08 33.02 0)
 		(unit 1)
@@ -6044,159 +5994,6 @@
 			(project "Controller_Board_mk2"
 				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
 					(reference "D3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 158.75 144.78 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "4bd9e11b-6c55-4ea6-b933-ca4f45832a4c")
-		(property "Reference" "R10"
-			(at 158.75 138.43 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33k"
-			(at 158.75 140.97 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 158.75 146.558 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 158.75 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 158.75 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB" "C4216"
-			(at 158.75 144.78 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "9c2fd4eb-9bf6-407c-88d1-71f06cdbae50")
-		)
-		(pin "2"
-			(uuid "c8cd313d-e181-481e-94ed-3cf5ecbaa6ca")
-		)
-		(instances
-			(project "Controller_Board_mk2"
-				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
-					(reference "R10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 138.43 144.78 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "4c02c57e-5cb2-47a3-8270-4944529fe7d6")
-		(property "Reference" "R6"
-			(at 142.748 146.558 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100k"
-			(at 138.684 144.78 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 138.43 146.558 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 138.43 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 138.43 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB" "C25803"
-			(at 138.43 144.78 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4597cd43-eed5-4e41-8ca5-0a222eae8ee5")
-		)
-		(pin "2"
-			(uuid "8e73c6cd-c604-452c-ac58-2dacd82188a9")
-		)
-		(instances
-			(project "Controller_Board_mk2"
-				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
-					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -6643,83 +6440,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 158.75 140.97 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6c9e283f-b066-494e-8e44-18122057e569")
-		(property "Reference" "R9"
-			(at 158.75 134.62 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33k"
-			(at 158.75 137.16 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 158.75 142.748 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 158.75 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 158.75 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB" "C4216"
-			(at 158.75 140.97 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "89bfb27a-aaac-4bb3-a68c-47ae7f0bc98f")
-		)
-		(pin "2"
-			(uuid "3d36b058-d71f-4f34-8088-1232826171ae")
-		)
-		(instances
-			(project ""
-				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
-					(reference "R9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:Polyfuse")
 		(at 52.07 137.16 0)
 		(unit 1)
@@ -6784,6 +6504,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C12559"
+			(at 52.07 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "64929782-5190-4415-8201-5c2b8002ea0f")
 		)
@@ -6794,6 +6523,92 @@
 			(project "Controller_Board_mk2"
 				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
 					(reference "F1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 158.75 140.97 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "77cfd3aa-1ad9-496f-b1f2-4926d5969b7b")
+		(property "Reference" "R9"
+			(at 158.75 134.62 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "33k"
+			(at 158.75 137.16 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 158.75 142.748 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 158.75 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 158.75 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C4216"
+			(at 158.75 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C4216"
+			(at 158.75 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c17d7131-810c-40cb-b26f-72a827fd332c")
+		)
+		(pin "2"
+			(uuid "24acb36e-4b95-408b-9107-9e9ccf51e240")
+		)
+		(instances
+			(project "Controller_Board_mk2"
+				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
+					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -7189,6 +7004,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C25803"
+			(at 138.43 152.4 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c53fd657-02c7-4643-af72-aa092b96d30d")
 		)
@@ -7199,6 +7023,91 @@
 			(project "Controller_Board_mk2"
 				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
 					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 138.43 140.97 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8ef9f2d0-473e-4bf5-b3e2-27965a28eef3")
+		(property "Reference" "R5"
+			(at 142.24 143.256 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 138.684 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 138.43 142.748 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 138.43 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 138.43 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C25803"
+			(at 138.43 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C25803"
+			(at 138.43 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "41d78adc-0a6f-4dfb-8e88-264f6e222d5a")
+		)
+		(pin "2"
+			(uuid "b67ce59c-816c-4013-8144-f4b349b74859")
+		)
+		(instances
+			(project "Controller_Board_mk2"
+				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -7903,6 +7812,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C4216"
+			(at 158.75 152.4 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "81c93bcc-5da9-4532-ab85-d41e33d0ad8e")
 		)
@@ -8002,6 +7920,91 @@
 			(project ""
 				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
 					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 138.43 144.78 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ab1206ce-e2cd-4fea-8c6d-25a86cd4c6a1")
+		(property "Reference" "R6"
+			(at 142.24 147.066 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 138.684 144.78 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 138.43 146.558 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 138.43 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 138.43 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C25803"
+			(at 138.43 144.78 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C25803"
+			(at 138.43 144.78 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "31a4131e-f1a1-46a5-8a42-a60c7cf1e03d")
+		)
+		(pin "2"
+			(uuid "6a18d16c-fdde-4e90-9794-5634fd9a50b3")
+		)
+		(instances
+			(project "Controller_Board_mk2"
+				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -8163,6 +8166,91 @@
 			(project ""
 				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
 					(reference "#PWR08")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 138.43 148.59 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c15ff6c3-6134-43d0-9a82-82fba845dc54")
+		(property "Reference" "R7"
+			(at 142.24 150.876 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 138.684 148.59 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 138.43 150.368 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 138.43 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 138.43 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C25803"
+			(at 138.43 148.59 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C25803"
+			(at 138.43 148.59 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a4163c4f-758a-4cf8-bb46-eb5b637e912a")
+		)
+		(pin "2"
+			(uuid "7dc4e1d3-272b-4c11-ba2a-934335900043")
+		)
+		(instances
+			(project "Controller_Board_mk2"
+				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
+					(reference "R7")
 					(unit 1)
 				)
 			)
@@ -8474,82 +8562,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 138.43 148.59 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "cd34216b-16fa-402f-a210-40c63139c9cb")
-		(property "Reference" "R7"
-			(at 142.748 149.606 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100k"
-			(at 138.684 148.59 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 138.43 150.368 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 138.43 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 138.43 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB" "C25803"
-			(at 138.43 148.59 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "c553305e-fccd-4aca-8b9a-f213dee7219c")
-		)
-		(pin "2"
-			(uuid "3e54a918-7f2e-4c16-8969-e79781f7d784")
-		)
-		(instances
-			(project "Controller_Board_mk2"
-				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
-					(reference "R7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:Polyfuse")
 		(at 85.09 137.16 0)
 		(unit 1)
@@ -8614,6 +8626,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C12559"
+			(at 85.09 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "9c8abde2-bee1-4daf-b3d4-d82f493c15d1")
 		)
@@ -8624,6 +8645,92 @@
 			(project "Controller_Board_mk2"
 				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
 					(reference "F3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 158.75 144.78 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e1fe7ff7-ad5f-4a95-bd98-f8a732db1dbd")
+		(property "Reference" "R10"
+			(at 158.75 138.43 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "33k"
+			(at 158.75 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 158.75 146.558 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 158.75 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 158.75 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C4216"
+			(at 158.75 144.78 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C4216"
+			(at 158.75 144.78 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e8591b14-ea32-4012-a780-fe25e61ac6ad")
+		)
+		(pin "2"
+			(uuid "12572907-3a24-4447-8598-8d4e5a0edaf7")
+		)
+		(instances
+			(project "Controller_Board_mk2"
+				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
+					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -8728,23 +8835,24 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 138.43 140.97 90)
+		(at 158.75 148.59 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "ed7d7267-83fc-429b-a482-0b3bce6b1614")
-		(property "Reference" "R5"
-			(at 142.494 142.24 90)
+		(fields_autoplaced yes)
+		(uuid "f5250a3c-9596-4b6d-9cd3-bdd469c730a7")
+		(property "Reference" "R11"
+			(at 158.75 142.24 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "100k"
-			(at 138.43 140.716 90)
+		(property "Value" "33k"
+			(at 158.75 144.78 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8752,7 +8860,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 138.43 142.748 90)
+			(at 158.75 150.368 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8761,7 +8869,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 138.43 140.97 0)
+			(at 158.75 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8770,7 +8878,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 138.43 140.97 0)
+			(at 158.75 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8778,8 +8886,17 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C25803"
-			(at 138.43 140.97 90)
+		(property "JLCPCB" "C4216"
+			(at 158.75 148.59 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C4216"
+			(at 158.75 148.59 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8788,15 +8905,15 @@
 			)
 		)
 		(pin "1"
-			(uuid "56a00491-c2ed-48e2-bf1c-51ae3ceb059f")
+			(uuid "6ccaf69f-631e-4f63-a3a0-424b9d3d6208")
 		)
 		(pin "2"
-			(uuid "13bde870-ede1-4321-ac8c-f1f3ed168da3")
+			(uuid "7e9d8c7a-c695-47a4-bee5-739eb930658d")
 		)
 		(instances
-			(project ""
+			(project "Controller_Board_mk2"
 				(path "/69d2267d-c56b-4cdc-9588-967c70d858f4"
-					(reference "R5")
+					(reference "R11")
 					(unit 1)
 				)
 			)
