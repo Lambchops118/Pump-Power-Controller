@@ -1,0 +1,20 @@
+Reference,Qty,Value,DNP,Exclude from BOM,Exclude from Board,Footprint,Datasheet
+A1,1,SC0918,,,,Raspberry Pi Pico W:MODULE_SC0918,https://datasheets.raspberrypi.com/picow/pico-w-datasheet.pdf
+"C1,C2",2,22uF,,,,Resistor_SMD:R_0603_1608Metric,~
+C3,1,0.1uF,,,,Resistor_SMD:R_0603_1608Metric,~
+"D9,D10,D11,D12,D13,D14,D15,D16",8,1N4148W,,,,Diode_SMD:D_SOD-123,https://www.vishay.com/docs/85748/1n4148w.pdf
+"J1,J2,J3,J4,J5",5,Barrel_Jack_MountingPin,,,,Connector_BarrelJack:BarrelJack_Wuerth_694108106102_2.5x5.5mm,~
+"K1,K2,K3,K4",4,SANYOU_SRD_Form_C,,,,Relay_THT:Relay_SPDT_SANYOU_SRD_Series_Form_C,http://www.sanyourelay.ca/public/products/pdf/SRD.pdf
+L1,1,4.7uH,,,,Capacitor_SMD:C_1206_3216Metric,~
+"Q1,Q2,Q3,Q4",4,BC817,,,,Package_TO_SOT_SMD:SOT-23,https://www.onsemi.com/pub/Collateral/BC818-D.pdf
+"R1,R2,R3,R4",4,2.2k,,,,Resistor_SMD:R_0603_1608Metric,~
+U1,1,AP63205WU,,,,Package_TO_SOT_SMD:TSOT-23-6,https://www.diodes.com/assets/Datasheets/AP63200-AP63201-AP63203-AP63205.pdf
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,can get,,,,,,
+,have in different size,,,,,,
+,have,,,,,,
+,cant get,,,,,,
