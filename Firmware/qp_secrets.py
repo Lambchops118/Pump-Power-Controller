@@ -10,7 +10,7 @@
 # them from Git history — rotate the Wi-Fi password (and any broker credential
 # that was ever committed) as part of deploying this firmware.
 
-WIFI_SSID = "Verizon_4LXXY"
+WIFI_SSID = "Verizon_4VLXXY"
 WIFI_PASSWORD = "artery4-fob-vim"
 
 MQTT_BROKER = "192.168.1.160"
