@@ -33,24 +33,36 @@ EVENT_TYPE_COMMAND_RECEIPT = ENTITY_ID + ".command_received"
 EVENT_TYPE_FUSE_TRANSITION = ENTITY_ID + ".fuse_transition"
 EVENT_TYPE_RUN_STOPPED = ENTITY_ID + ".run_stopped"
 
-# --- confirmed hardware mapping (bench-confirmed 2026-07-26) ------------------
+# --- confirmed hardware mapping (netlist-derived 2026-08-28) ------------------
 #
-# The owner's original table used MicroPython GPIO numbers, not Pico physical
-# header positions. This was proven after deployment with a direct script using
-# Pin(9), Pin(10), Pin(11), and Pin(12): each output activated its relay when
-# driven high. The fuse inputs from that same table are GP1, GP2, GP4, and GP5,
-# but fuse sensing remains deliberately unavailable (see below).
+# Taken from the Controller_Board_mk2 netlist, which is the authoritative record
+# of what the board actually routes. Each channel drives a base resistor into a
+# low-side NPN switch that energizes one relay coil:
+#
+#     GP6 -> R1 -> Q1 -> K4 -> output J2   (fuse divider F2 -> R5 -> GP0)
+#     GP7 -> R4 -> Q4 -> K3 -> output J3   (fuse divider F1 -> R6 -> GP1)
+#     GP8 -> R3 -> Q3 -> K2 -> output J4   (fuse divider F3 -> R7 -> GP2)
+#     GP9 -> R2 -> Q2 -> K1 -> output J5   (fuse divider F4 -> R8 -> GP3)
+#
+# Channels are numbered in output-connector order (J2..J5). Which pot a channel
+# waters is decided by which terminal its pump is plugged into, not by firmware.
+#
+# This supersedes the GP9/GP10/GP11/GP12 table, which was inferred rather than
+# measured (SESSION_HANDOFF_2026-07-26_QUAD_PUMP_GPIO_MAPPING.md records that no
+# physical command was ever issued against it). The board marks GP10, GP11 and
+# GP12 as unconnected, so channels 2-4 drove floating pins and no relay moved.
 #
 # Logical channel numbers 1-4 are the only identifiers used off-device. GPIO
 # numbers never appear in an MQTT topic, payload, or action parameter.
 CHANNELS = (1, 2, 3, 4)
 
-CHANNEL_RELAY_GPIO = {1: 9, 2: 10, 3: 11, 4: 12}
-CHANNEL_FUSE_GPIO = {1: 1, 2: 2, 3: 4, 4: 5}
+CHANNEL_RELAY_GPIO = {1: 6, 2: 7, 3: 8, 4: 9}
+CHANNEL_FUSE_GPIO = {1: 0, 2: 1, 3: 2, 4: 3}
 
-# Owner-confirmed: driving the GPIO high energizes the relay and runs the pump;
-# driving it low is the safe state. Boot/reset leaves the pins as inputs
-# (high impedance) until initialize() drives them low.
+# Netlist-confirmed: Q1-Q4 are low-side NPN switches, so driving the GPIO high
+# energizes the relay and runs the pump; driving it low is the safe state.
+# Boot/reset leaves the pins as inputs (high impedance) until initialize()
+# drives them low.
 RELAY_ACTIVE_HIGH = True
 
 # --- confirmed safety policy --------------------------------------------------
@@ -77,7 +89,7 @@ DEFAULT_RUN_SECONDS = 30
 # fault and never inhibits anything.
 #
 # NOTE (revisit): fuse sensing is NOT IMPLEMENTED on this hardware revision.
-# The fuse signal is an analog divider, but GP1/GP2/GP4/GP5 have no ADC — the Pico W
+# The fuse signal is an analog divider, but GP0/GP1/GP2/GP3 have no ADC — the Pico W
 # exposes only GP26-GP28. Every channel therefore reports "unknown" forever and
 # this policy currently has nothing to act on. See FUSE_SENSING_AVAILABLE below
 # and docs/awareness-memory/OPEN_QUESTIONS.md (OQ-D).
