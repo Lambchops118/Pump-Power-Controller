@@ -59,9 +59,18 @@ RELAY_ACTIVE_HIGH = True
 # measured, with a 30 second hard ceiling enforced locally by the firmware.
 MAX_CONCURRENT_PUMPS = 1
 MAX_RUN_SECONDS = 30
+
+# One pump at a time is a supply limit, not a reason to discard a request.
+# Runs that arrive while another channel is busy wait here and start in order.
+# Bounded so a stuck queue cannot outlive the awareness timeout by much:
+# four channels at MAX_RUN_SECONDS each is the worst honest wait.
+PENDING_QUEUE_MAX = 4
+PENDING_MAX_WAIT_MS = (len(CHANNELS) * MAX_RUN_SECONDS) * 1000
 MIN_RUN_SECONDS = 1
-# Preserves the legacy firmware's fixed 8 second watering cycle.
-DEFAULT_RUN_SECONDS = 8
+# Used when a command omits duration_seconds, and always on the legacy topics
+# (bare 0/1 payloads carry no duration). Owner-set 2026-08-28, replacing the
+# legacy firmware's fixed 8 second cycle.
+DEFAULT_RUN_SECONDS = 30
 
 # Owner-confirmed policy for a *confirmed* blown fuse: refuse to start the
 # channel and immediately stop it if it is already running. "unknown" is not a

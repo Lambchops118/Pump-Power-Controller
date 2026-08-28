@@ -140,6 +140,7 @@ class PumpController(object):
         self._clock = clock or Clock()
         self._monitor = fuse_monitor or FuseMonitor(fuses, self._clock)
         self._runs = {}  # channel -> _Run
+        self._pending = []  # commands waiting for the concurrency limit
 
     # --- lifecycle -----------------------------------------------------------
 
@@ -152,6 +153,7 @@ class PumpController(object):
         """
         self._relays.initialize_safe()
         self._runs = {}
+        self._pending = []
         messages = []
         for entry in self._ledger.recover_unfinished():
             messages.append(
@@ -175,6 +177,15 @@ class PumpController(object):
 
     def running_channels(self):
         return tuple(sorted(self._runs))
+
+    def pending_channels(self):
+        return tuple(command["channel"] for command in self._pending)
+
+    def _pending_for(self, channel):
+        for command in self._pending:
+            if command["channel"] == channel:
+                return command
+        return None
 
     def is_running(self, channel):
         return channel in self._runs
@@ -251,7 +262,7 @@ class PumpController(object):
                 correlation_id,
                 channel,
             )
-        if channel in self._runs:
+        if channel in self._runs or self._pending_for(channel) is not None:
             return self.reject(
                 command["command_id"],
                 config.RESULT_BUSY,
@@ -260,19 +271,23 @@ class PumpController(object):
                 channel,
             )
         if len(self._runs) >= config.MAX_CONCURRENT_PUMPS:
-            return self.reject(
-                command["command_id"],
-                config.RESULT_POWER_LIMIT,
-                "concurrent pump limit reached",
-                correlation_id,
-                channel,
-            )
+            # The supply budget allows one pump at a time, but a request that
+            # arrives while another channel is busy is deferred, not discarded.
+            # Dropping it here is what made channels 2-4 look dead whenever the
+            # automation fired every pot in one batch.
+            return self._enqueue(command)
 
+        return self._begin_run(command)
+
+    def _begin_run(self, command):
+        channel = command["channel"]
+        correlation_id = command.get("correlation_id")
         duration = command.get("duration_seconds") or config.DEFAULT_RUN_SECONDS
         if duration > config.MAX_RUN_SECONDS:
             duration = config.MAX_RUN_SECONDS
 
-        # Durable intent first, then the physical effect.
+        # Durable intent first, then the physical effect. Already recorded if
+        # this run waited in the pending queue; accept() is idempotent.
         self._ledger.accept(command["command_id"], command["action"], channel)
         now = self._clock.ticks_ms()
         self._relays.set(channel, True)
@@ -293,10 +308,77 @@ class PumpController(object):
             self.state_message(),
         ]
 
+    def _enqueue(self, command):
+        """Defer a run until the concurrency limit frees up.
+
+        The command is recorded as accepted before it is queued, so a duplicate
+        delivery is idempotent and a reset while it waits is finalized as
+        stopped by boot recovery rather than started later.
+        """
+        channel = command["channel"]
+        correlation_id = command.get("correlation_id")
+        if len(self._pending) >= config.PENDING_QUEUE_MAX:
+            return self.reject(
+                command["command_id"],
+                config.RESULT_POWER_LIMIT,
+                "pump queue is full",
+                correlation_id,
+                channel,
+            )
+        self._ledger.accept(command["command_id"], command["action"], channel)
+        command["queued_ms"] = self._clock.ticks_ms()
+        self._pending.append(command)
+
+        # Progress only, never a final result: the run has not started.
+        topic, envelope = self._events.command_receipt(
+            command["command_id"], command["action"], channel, correlation_id
+        )
+        return [Message(topic, envelope=envelope, critical=False)]
+
+    def _start_pending(self):
+        """Start queued runs while capacity allows, dropping any that waited
+        longer than the awareness request could plausibly still care about."""
+        messages = []
+        now = self._clock.ticks_ms()
+        while self._pending:
+            command = self._pending[0]
+            waited = self._clock.ticks_diff(now, command.get("queued_ms", now))
+            if waited >= config.PENDING_MAX_WAIT_MS:
+                self._pending.pop(0)
+                messages.extend(
+                    self.reject(
+                        command["command_id"],
+                        config.RESULT_POWER_LIMIT,
+                        "queued longer than the pump queue bound",
+                        command.get("correlation_id"),
+                        command["channel"],
+                    )
+                )
+                continue
+            if len(self._runs) >= config.MAX_CONCURRENT_PUMPS:
+                break
+            self._pending.pop(0)
+            messages.extend(self._begin_run(command))
+        return messages
+
     def _stop_command(self, command):
         channel = command["channel"]
         correlation_id = command.get("correlation_id")
         messages = []
+        queued = self._pending_for(channel)
+        if queued is not None:
+            # Cancelling before the relay ever moved: the deferred run gets its
+            # own truthful negative acknowledgement.
+            self._pending.remove(queued)
+            messages.extend(
+                self.reject(
+                    queued["command_id"],
+                    config.RESULT_STOPPED,
+                    "stop_command",
+                    queued.get("correlation_id"),
+                    channel,
+                )
+            )
         run = self._runs.get(channel)
         if run is not None:
             # The interrupted run gets its own truthful negative acknowledgement
@@ -353,11 +435,25 @@ class PumpController(object):
                 messages.extend(
                     self._finish_run(run, True, config.RESULT_COMPLETED, "deadline")
                 )
+
+        # Only after the finished runs released their capacity.
+        messages.extend(self._start_pending())
         return messages
 
     def stop_all(self, reason):
         """Immediate local shutdown of every channel (fault paths, shutdown)."""
         messages = []
+        while self._pending:
+            command = self._pending.pop(0)
+            messages.extend(
+                self.reject(
+                    command["command_id"],
+                    config.RESULT_STOPPED,
+                    reason,
+                    command.get("correlation_id"),
+                    command["channel"],
+                )
+            )
         for channel in list(self._runs):
             messages.extend(
                 self._finish_run(

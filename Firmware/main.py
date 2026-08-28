@@ -19,7 +19,8 @@
 #
 # Safety properties that do not depend on the network:
 #   - every relay is driven off before Wi-Fi is even started;
-#   - one pump at a time, 30 second hard local deadline;
+#   - one pump at a time, 30 second hard local deadline; additional requests
+#     wait in a bounded queue and run in order rather than being discarded;
 #   - the run deadline is enforced from the main loop using a monotonic clock,
 #     never from a sleep inside the MQTT callback;
 #   - a reset during a run leaves every relay off and does not replay the run.
@@ -160,6 +161,7 @@ def _health_payload(supervisor):
         "inbound_dropped": _stats["inbound_dropped"],
         "commands_accepted": _stats["commands"],
         "commands_rejected": _stats["rejected"],
+        "pending_runs": len(controller.pending_channels()),
         "fuse_sensing": "unavailable",
         "watchdog": "enabled" if _watchdog is not None else "disabled",
     }
