@@ -59,7 +59,11 @@ _stats = {
     "unidentified_rejects": 0,
     "commands": 0,
 }
-_boot_ms = clock.ticks_ms()
+# ``ticks_diff`` is only defined over intervals shorter than half the tick
+# period (~6.2 days on RP2040), so uptime is accumulated tick by tick instead of
+# differenced against a boot reading that eventually goes out of range.
+_last_uptime_ms = clock.ticks_ms()
+_uptime_ms = 0
 
 
 def _on_message(topic, message, retained=False):
@@ -150,12 +154,14 @@ def _handle_inbound(topic, raw):
 def _health_payload(supervisor):
     return {
         "firmware_version": config.FIRMWARE_VERSION,
-        "uptime_ms": clock.ticks_diff(clock.ticks_ms(), _boot_ms),
+        "uptime_ms": _uptime_ms,
         "reset_cause": hardware.reset_cause(),
         "wifi_connected": supervisor.wifi_connected(),
         "mqtt_connected": supervisor.connected,
         "rssi": supervisor.rssi(),
         "reconnects": supervisor.reconnects,
+        "consecutive_failures": supervisor.consecutive_failures,
+        "radio_resets": supervisor.radio_resets,
         "last_error": supervisor.last_error,
         "outbound_dropped": queue.dropped,
         "inbound_dropped": _stats["inbound_dropped"],
@@ -174,6 +180,34 @@ def _start_watchdog():
         return machine.WDT(timeout=config.WATCHDOG_TIMEOUT_MS)
     except Exception:
         return None
+
+
+def _should_hard_reset(supervisor):
+    """A network that has not come back after the whole escalation ladder.
+
+    The radio has already been power-cycled by the supervisor. A full reset is
+    the last thing left, and it is only ever safe while nothing is watering:
+    the reset itself drives the relays off, but a run in flight would lose its
+    acknowledgement path and be reported as interrupted.
+    """
+    limit = config.RECONNECT_HARD_RESET_ATTEMPTS
+    if not limit or supervisor.connected:
+        return False
+    if supervisor.consecutive_failures < limit:
+        return False
+    return not controller.running_channels() and not controller.pending_channels()
+
+
+def _hard_reset():
+    relays.initialize_safe()
+    try:
+        import machine
+
+        machine.reset()
+    except Exception:
+        # No ``machine`` (host) or the reset was refused: fall through and keep
+        # running rather than stopping the loop that enforces deadlines.
+        pass
 
 
 def _sleep_ms(milliseconds):
@@ -208,6 +242,10 @@ def _build_supervisor():
         password=MQTT_PASSWORD,
         subscriptions=subscriptions,
         last_will=(config.TOPIC_HEALTH.encode("utf-8"), offline),
+        # Connect and publish can each outlast a loop iteration, so those paths
+        # feed the watchdog for themselves rather than relying on the once-per-
+        # tick feed below.
+        watchdog=_watchdog,
     )
 
 
@@ -215,6 +253,8 @@ _watchdog = _start_watchdog()
 
 
 def run():
+    global _uptime_ms, _last_uptime_ms
+
     supervisor = _build_supervisor()
 
     # Boot snapshot plus truthful recovery acknowledgements for anything a
@@ -245,6 +285,8 @@ def run():
 
         if connected:
             supervisor.poll()
+        elif _should_hard_reset(supervisor):
+            _hard_reset()
 
         # 3. Inbound work, bounded per tick.
         processed = 0
@@ -255,9 +297,11 @@ def run():
 
         # 4. Periodic reporting.
         now = clock.ticks_ms()
+        _uptime_ms += clock.ticks_diff(now, _last_uptime_ms)
+        _last_uptime_ms = now
         if clock.ticks_diff(now, last_heartbeat) >= config.HEARTBEAT_INTERVAL_MS:
             last_heartbeat = now
-            topic, envelope = events.heartbeat(clock.ticks_diff(now, _boot_ms))
+            topic, envelope = events.heartbeat(_uptime_ms)
             queue.push(_message(topic, envelope, critical=False))
         if clock.ticks_diff(now, last_health) >= config.HEALTH_INTERVAL_MS:
             last_health = now
@@ -269,7 +313,7 @@ def run():
         # 5. Drain outbound, bounded so publishing never starves the deadline
         #    check above.
         drained = 0
-        while connected and len(queue) and drained < 4:
+        while connected and len(queue) and drained < config.OUTBOUND_DRAIN_PER_TICK:
             message = queue.peek()
             if not supervisor.publish(
                 message.topic, message.payload(), qos=1, retain=message.retain

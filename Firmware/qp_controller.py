@@ -47,6 +47,7 @@ class Clock(object):
         self._time = time
         self._ticks_ms = getattr(time, "ticks_ms", None)
         self._ticks_diff = getattr(time, "ticks_diff", None)
+        self._ticks_add = getattr(time, "ticks_add", None)
 
     def ticks_ms(self):
         if self._ticks_ms is not None:
@@ -57,6 +58,16 @@ class Clock(object):
         if self._ticks_diff is not None:
             return self._ticks_diff(later, earlier)
         return later - earlier
+
+    def ticks_add(self, ticks, delta):
+        """Offset a tick reading, staying inside the platform's tick range.
+
+        Plain addition can leave the counter's domain near a wrap; only
+        ``ticks_add`` is defined there.
+        """
+        if self._ticks_add is not None:
+            return self._ticks_add(ticks, delta)
+        return ticks + delta
 
 
 class FuseMonitor(object):
@@ -295,7 +306,7 @@ class PumpController(object):
             command["command_id"],
             channel,
             now,
-            now + duration * 1000,
+            self._ticks_add(now, duration * 1000),
             correlation_id,
             command.get("legacy_pin"),
         )
@@ -464,6 +475,12 @@ class PumpController(object):
         return messages
 
     # --- internals -----------------------------------------------------------
+
+    def _ticks_add(self, ticks, delta):
+        adder = getattr(self._clock, "ticks_add", None)
+        if adder is not None:
+            return adder(ticks, delta)
+        return ticks + delta
 
     def _finish_run(self, run, ok, result, reason):
         channel = run.channel

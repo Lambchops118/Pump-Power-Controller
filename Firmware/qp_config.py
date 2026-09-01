@@ -164,16 +164,65 @@ STATE_SNAPSHOT_INTERVAL_MS = 300000
 
 MQTT_KEEPALIVE_SECONDS = 60
 MQTT_PING_INTERVAL_MS = 20000
+
+# A PINGREQ that never gets its PINGRESP is the only evidence the firmware has
+# that a TCP connection has gone half-open: writes keep "succeeding" into a
+# socket the far end has forgotten. Without this bound the board reports
+# mqtt_connected forever and publishes into the void. Four missed pings.
+MQTT_INACTIVITY_TIMEOUT_MS = 90000
+
 RECONNECT_BASE_MS = 1000
 RECONNECT_MAX_MS = 60000
 RECONNECT_JITTER_MS = 500
+
+# Escalation ladder for a network that does not come back. Another connect()
+# call does not recover a wedged CYW43; the interface has to be brought down
+# and re-initialized, and past that only a full reset will do.
+#
+# Consecutive failed attempts before the Wi-Fi interface is power-cycled:
+RECONNECT_RADIO_RESET_ATTEMPTS = 5
+# Consecutive failed attempts before main.py resets the board. Only ever taken
+# while no pump is running and none is queued. At the 60 s backoff cap this is
+# roughly twenty minutes offline.
+RECONNECT_HARD_RESET_ATTEMPTS = 20
 
 # Bounded outbound buffer: important state/ack events survive a brief outage
 # without letting a long outage exhaust RAM. Oldest non-critical entries are
 # dropped first and the drop is reported in health.
 OUTBOUND_QUEUE_MAX = 32
 
-# Watchdog must be longer than any single blocking network operation. Relay
-# deadlines are enforced from the main loop, never from the watchdog.
+# The watchdog must be longer than any single blocking operation between two
+# feeds. On RP2040 the hardware maximum is ~8388 ms, so the budget cannot be
+# raised to fit the network - the blocking work has to fit under it instead.
+#
+# Measured on the board 2026-09-01: a Wi-Fi join takes ~4000 ms and a TCP
+# connect to an unreachable LAN host blocks for the full socket timeout. Doing
+# both between two feeds cost ~9000 ms against this 8000 ms watchdog, so the
+# board reset mid-connect, before any backoff was recorded, and did it again on
+# every reboot: a permanent reset loop for as long as the broker was down.
+#
+# Two things keep that from recurring:
+#   - the Wi-Fi join is now polled from the main loop instead of blocked on, so
+#     it costs no watchdog budget at all (and may take longer than the socket
+#     timeout without being treated as a failure);
+#   - the MQTT handshake is the only blocking step left, and connect + CONNACK
+#     is bounded by 2 x SOCKET_TIMEOUT_SECONDS, which must stay under this.
 WATCHDOG_TIMEOUT_MS = 8000
-SOCKET_TIMEOUT_SECONDS = 5
+SOCKET_TIMEOUT_SECONDS = 3
+
+# How long the firmware will poll for a Wi-Fi association before calling the
+# attempt failed and re-issuing connect(). Larger than SOCKET_TIMEOUT_SECONDS
+# on purpose: waiting here costs no watchdog budget, because it does not block.
+#
+# Measured on the board 2026-09-01 over repeated cold starts: bringing the
+# interface up takes ~970 ms and a successful association ~4.1 s. But an
+# association that stalls does not recover on its own - one run sat unjoined
+# for the full 40 s of the test, and only a fresh connect() fixed it. So this
+# is a stall detector, not a patience setting: roughly twice the observed join
+# time, low enough to retry promptly and high enough not to cut short a slow
+# but genuine association.
+WIFI_JOIN_TIMEOUT_MS = 8000
+
+# Publications drained per tick. Each one can block on its QoS 1 PUBACK, so
+# the watchdog is fed before every publish rather than once per tick.
+OUTBOUND_DRAIN_PER_TICK = 4
